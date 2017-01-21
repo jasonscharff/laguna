@@ -1,0 +1,10 @@
+Flask
+Jinja2
+MarkupSafe
+Werkzeug
+click
+itsdangerous
+requests
+setuptools
+wheel
+wsgiref
