@@ -9,9 +9,9 @@ def hello_world():
     return 'Hello World!'
 
 
-def get_exchange_rates(currency_code):
+def get_exchange_rates(base_currency_code):
     base_url = 'http://api.fixer.io/latest'
-    params = '?base={}'.format(currency_code)
+    params = '?base={}'.format(base_currency_code)
 
     r = requests.get(base_url + params)
 
