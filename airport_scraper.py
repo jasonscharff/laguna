@@ -135,3 +135,4 @@ def generate_tries(json_file, ranking_csv):
 
 
 generate_tries('raw_data/airports.json','raw_data/top_airports.csv')
+
