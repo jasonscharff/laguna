@@ -5,6 +5,7 @@ import pickle
 import marisa_trie
 from flask import Response, request
 from airport import Airport
+from flask_cors import CORS, cross_origin
 
 
 
@@ -43,6 +44,7 @@ def get_exchange_rates(base_currency_code):
 
 
 @app.route('/autosuggest')
+@cross_origin()
 def search():
     term = request.args.get('q')
     if term is None or len(term) == 0:
