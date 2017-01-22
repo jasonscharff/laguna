@@ -8,3 +8,5 @@ requests
 setuptools
 wheel
 wsgiref
+marisa-trie
+beautifulsoup4
