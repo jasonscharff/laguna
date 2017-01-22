@@ -23,5 +23,6 @@ def get_exchange_rates(base_currency_code):
 
 
 
+
 if __name__ == '__main__':
     app.run()

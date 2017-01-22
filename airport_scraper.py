@@ -66,8 +66,14 @@ def parse_ranking_csv(ranking_csv):
         reader = csv.DictReader(file)
         for row in reader:
             code = row['code']
-            icao = code.split('_')[0]
+            icao = code.split('_')[1]
             passengers = int(row['passengers'])
+            #we have data from two sources. Use the higher version when the data overlaps
+            if icao in dictionary:
+                previous_passenger_count = dictionary[icao]
+                if previous_passenger_count > passengers:
+                    passengers = previous_passenger_count
+
             dictionary[icao] = passengers
 
     return dictionary
@@ -97,17 +103,17 @@ def generate_tries(json_file, ranking_csv):
 
             icao = str(airport['icao'])
             if icao in airport_coefficients:
-                airport_object = Airport(airport_json=airport, popularity_coefficient=airport_coefficients[icao])
+                airport_object = Airport(airport_json=airport, popularity=airport_coefficients[icao])
             else:
                 airport_object = Airport(airport_json=airport)
 
-            airport_names.append(airport['airport_name'])
-            airport_iata.append(airport['iata'])
-            airport_icao.append(airport['icao'])
+            airport_names.append(airport_object.name)
+            airport_iata.append(airport_object.iata)
+            airport_icao.append(airport_object.icao)
 
-            airport_name_dictionary[airport['airport_name']] = airport_object
-            airport_iata_dictionary[airport['iata']] = airport_object
-            airport_icao_dictionary[airport['icao']] = airport_object
+            airport_name_dictionary[airport_object.name] = airport_object
+            airport_iata_dictionary[airport_object.iata] = airport_object
+            airport_icao_dictionary[airport_object.icao] = airport_object
 
 
     airport_name_trie = marisa_trie.Trie(airport_names)
@@ -117,14 +123,15 @@ def generate_tries(json_file, ranking_csv):
     #use unoptimized pickle because unicode.
     import pickle
 
-    pickle.dump(airport_name_trie, open("airport_names_trie.p", "wb"))
-    pickle.dump(airport_iata_trie, open("airport_iata_trie.p", "wb"))
-    pickle.dump(airport_icao_trie, open("airport_icao_trie.p", "wb"))
+    pickle.dump(airport_name_trie, open("serialized/airport_names_trie.p", "wb"))
+    pickle.dump(airport_iata_trie, open("serialized/airport_iata_trie.p", "wb"))
+    pickle.dump(airport_icao_trie, open("serialized/airport_icao_trie.p", "wb"))
 
-    pickle.dump(airport_name_dictionary, open("airport_names_dictionary.p", "wb"))
-    pickle.dump(airport_iata_dictionary, open("airport_iata_dictionary.p", "wb"))
-    pickle.dump(airport_icao_dictionary, open("airport_icao_dictionary.p", "wb"))
-
-
+    pickle.dump(airport_name_dictionary, open("serialized/airport_names_dictionary.p", "wb"))
+    pickle.dump(airport_iata_dictionary, open("serialized/airport_iata_dictionary.p", "wb"))
+    pickle.dump(airport_icao_dictionary, open("serialized/airport_icao_dictionary.p", "wb"))
 
 
+
+
+generate_tries('raw_data/airports.json','raw_data/top_airports.csv')
