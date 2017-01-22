@@ -1,0 +1,15 @@
+{
+  "name": "canoe",
+  "version": "1.0.0",
+  "description": "canoe is a lightweight \"boat\" that interfaces with kayak",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jose Bethancourt",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.14.0",
+    "request": "^2.79.0"
+  }
+}
